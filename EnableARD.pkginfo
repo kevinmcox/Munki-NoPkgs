@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>kevinmcox</string>
+		<key>creation_date</key>
+		<date>2017-06-08T20:26:11Z</date>
+		<key>munki_version</key>
+		<string>3.0.0.3333</string>
+		<key>os_version</key>
+		<string>10.12.5</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+		<string>beta</string>
+		<string>live</string>
+	</array>
+	<key>category</key>
+	<string>NoPkg</string>
+	<key>developer</key>
+	<string>Armin Briegel</string>
+	<key>display_name</key>
+	<string>Enable Apple Remote Desktop</string>
+	<key>icon_name</key>
+	<string>Remote Desktop.png</string>
+	<key>installcheck_script</key>
+	<string>#!/bin/sh
+
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki export PATH
+
+# Original Script by Armin Briegel
+# http://scriptingosx.com/2016/01/control-apple-remote-desktop-access-with-munki/
+# Armin adapted scripts from: https://jamfnation.jamfsoftware.com/discussion.html?id=1989
+
+# This will run as a munki install_check script.
+# Exit status of 0 means install needs to run.
+# Exit status not 0 means no installation necessary.
+
+# Check if ARD is running:
+
+ardrunning=$(ps ax | grep -c -i "[Aa]rdagent")
+
+if [[ $ardrunning -eq 0 ]]; then
+	echo "ARD not running."
+	exit 0
+fi
+
+# Check if All Users access is off like it should be:
+
+all_users=$(defaults read /Library/Preferences/com.apple.RemoteManagement ARD_AllLocalUsers 2&gt;/dev/null)
+
+if [[ $all_users -eq 1 ]]; then
+	echo "All Users Access Enabled."
+	exit 0
+fi
+
+# Check if "local" user has ARD privileges:
+
+ard_admins=$(dscl . list /Users naprivs | cut -d ' ' -f 1)
+
+if [[ $ard_admins != *local* ]]; then
+	echo "GalvNews local is not an ARD admin."
+	exit 0
+fi
+
+echo "Everything looks great!"
+
+exit 1</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>minimum_os_version</key>
+	<string>10.8.0</string>
+	<key>name</key>
+	<string>EnableARD</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/sh
+
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki export PATH
+
+# Original Script by Armin Briegel
+# http://scriptingosx.com/2016/01/control-apple-remote-desktop-access-with-munki/
+# Uses kickstart to enable full Remote Desktop access.
+# For more info, see: http://support.apple.com/kb/HT2370
+
+kickstart="/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart"
+
+# Enable ARD access for "local" and "sniadmin" users:
+
+$kickstart -configure -access -on -users local,sniadmin -privs -all
+
+$kickstart -configure -allowAccessFor -specifiedUsers
+
+$kickstart -activate
+
+exit 0</string>
+	<key>unattended_install</key>
+	<true/>
+	<key>version</key>
+	<string>0.1</string>
+</dict>
+</plist>
