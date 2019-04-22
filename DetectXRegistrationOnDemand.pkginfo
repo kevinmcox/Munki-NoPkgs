@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OnDemand</key>
+	<true/>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>kevinmcox</string>
+		<key>creation_date</key>
+		<date>2019-01-11T17:17:44Z</date>
+		<key>munki_version</key>
+		<string>3.6.0.3696</string>
+		<key>os_version</key>
+		<string>10.13.6</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>blocking_applications</key>
+	<array>
+		<string>DetectX Swift.app</string>
+	</array>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+		<string>beta</string>
+		<string>live</string>
+	</array>
+	<key>category</key>
+	<string>Self-Service</string>
+	<key>description</key>
+	<string>Run this action to license DetectX Swift if the application reports that it is unlicensed. (There will be no visible signs that this search is taking place and you may safely close Managed Software Center after clicking Install.)</string>
+	<key>developer</key>
+	<string>Kevin M. Cox</string>
+	<key>display_name</key>
+	<string>DetectX Registration</string>
+	<key>icon_name</key>
+	<string>DetectX Swift.png</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>minimum_os_version</key>
+	<string>10.11</string>
+	<key>name</key>
+	<string>DetectX Registration</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/bash
+
+"/Applications/DetectX Swift.app/Contents/MacOS/DetectX Swift" register -key "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXX" -email "admin@example.com"</string>
+	<key>unattended_install</key>
+	<false/>
+	<key>version</key>
+	<string>1.0</string>
+</dict>
+</plist>
