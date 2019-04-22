@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OnDemand</key>
+	<true/>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>kevinmcox</string>
+		<key>creation_date</key>
+		<date>2018-02-12T21:40:44Z</date>
+		<key>munki_version</key>
+		<string>3.2.0.3476</string>
+		<key>os_version</key>
+		<string>10.12.6</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+		<string>beta</string>
+		<string>live</string>
+	</array>
+	<key>category</key>
+	<string>Self-Service</string>
+	<key>description</key>
+	<string>On Demand to enable Apple Updates via Munki.</string>
+	<key>developer</key>
+	<string>Kevin M. Cox</string>
+	<key>display_name</key>
+	<string>Enable Apple Updates</string>
+	<key>icon_name</key>
+	<string>OnDemand.png</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>minimum_os_version</key>
+	<string>10.10.0</string>
+	<key>name</key>
+	<string>AppleUpdatesEnable</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/bash
+
+# Enables Apple Updates through Munki.
+
+/usr/bin/defaults write /Library/Preferences/ManagedInstalls InstallAppleSoftwareUpdates -bool True
+
+echo Intall Apple Software Updates ENABLED
+
+/usr/bin/defaults write /Library/Preferences/ManagedInstalls UnattendedAppleUpdates -bool True
+
+echo Unattended Apple Updates ENABLED</string>
+	<key>unattended_install</key>
+	<false/>
+	<key>version</key>
+	<string>1.0</string>
+</dict>
+</plist>
