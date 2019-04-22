@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OnDemand</key>
+	<true/>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>kevinmcox</string>
+		<key>creation_date</key>
+		<date>2018-08-16T09:15:44Z</date>
+		<key>munki_version</key>
+		<string>3.3.1.3537</string>
+		<key>os_version</key>
+		<string>10.13.6</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+		<string>beta</string>
+		<string>live</string>
+	</array>
+	<key>category</key>
+	<string>Self-Service</string>
+	<key>description</key>
+	<string>Run this action to execute a full disk search for potential malware on your computer using DetectX Swift. The results will be automatically transmitted to The Daily News’ reporting center for evalution. (There will be no visible signs that this search is taking place and you may safely close Managed Software Center after clicking Install.)</string>
+	<key>developer</key>
+	<string>Kevin M. Cox</string>
+	<key>display_name</key>
+	<string>DetectX Search &amp; Report</string>
+	<key>icon_name</key>
+	<string>DetectX Swift.png</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>minimum_os_version</key>
+	<string>10.11</string>
+	<key>name</key>
+	<string>DetectX OnDemand</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/bash
+
+"/Applications/DetectX Swift.app/Contents/MacOS/DetectX Swift" search -aj "/usr/local/munki/preflight.d/cache/detectx.json"</string>
+	<key>unattended_install</key>
+	<false/>
+	<key>version</key>
+	<string>1.0</string>
+</dict>
+</plist>
