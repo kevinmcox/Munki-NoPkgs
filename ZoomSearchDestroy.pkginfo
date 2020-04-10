@@ -93,21 +93,21 @@ echo "Search and Destroy Zoom files..."
 if
 	[ -d /Applications/zoom.us.app ]
 then
-	rm -rf /Applications/zoom.us.app
+	/bin/rm -rf /Applications/zoom.us.app
 	echo "Deleted /Applications/zoom.us.app"
 fi
 
 if
 	[ -d /Library/Audio/Plug-Ins/HAL/ZoomAudioDevice.driver ]
 then
-	rm -rf /Library/Audio/Plug-Ins/HAL/ZoomAudioDevice.driver
+	/bin/rm -rf /Library/Audio/Plug-Ins/HAL/ZoomAudioDevice.driver
 	echo "Deleted /Library/Audio/Plug-Ins/HAL/ZoomAudioDevice.driver"
 fi
 
 if
 	[ -d /Library/Internet\ Plug-Ins/ZoomUsPlugIn.plugin ]
 then
-	rm -rf /Library/Internet\ Plug-Ins/ZoomUsPlugIn.plugin
+	/bin/rm -rf /Library/Internet\ Plug-Ins/ZoomUsPlugIn.plugin
 	echo "Deleted /Library/Internet\ Plug-Ins/ZoomUsPlugIn.plugin"
 fi
 
@@ -115,7 +115,7 @@ if
 	[ -d /System/Library/Extensions/ZoomAudioDevice.kext ]
 then
 	kextunload -b zoom.us.ZoomAudioDevice
-	rm -rf /System/Library/Extensions/ZoomAudioDevice.kext
+	/bin/rm -rf /System/Library/Extensions/ZoomAudioDevice.kext
 	echo "Deleted /System/Library/Extensions/ZoomAudioDevice.kext"
 fi
 
@@ -124,56 +124,56 @@ fi
 if
 	[ -d /Users/*/.zoomus/ ]
 then
-	rm -rf /Users/*/.zoomus/
+	/bin/rm -rf /Users/*/.zoomus/
 	echo "Deleted /Users/*/.zoomus/"
 fi
 
 if
 	[ -d /Users/*/Applications/zoom.us.app ]
 then
-	rm -rf /Users/*/Applications/zoom.us.app
+	/bin/rm -rf /Users/*/Applications/zoom.us.app
 	echo "Deleted /Users/*/Applications/zoom.us.app"
 fi
 
 if
 	[ -d /Users/*/Library/Application\ Support/zoom.us/ ]
 then
-	rm -rf /Users/*/Library/Application\ Support/zoom.us/
+	/bin/rm -rf /Users/*/Library/Application\ Support/zoom.us/
 	echo "Deleted /Users/*/Library/Application\ Support/zoom.us/"
 fi
 
 if
 	[ -d /Users/*/Library/Caches/us.zoom.xos ]
 then
-	rm -rf /Users/*/Library/Caches/us.zoom.xos
+	/bin/rm -rf /Users/*/Library/Caches/us.zoom.xos
 	echo "Deleted /Users/*/Library/Caches/us.zoom.xos"
 fi
 
 if
 	[ -d /Users/*/Library/Internet\ Plug-Ins/ZoomUsPlugIn.plugin ]
 then
-	rm -rf /Users/*/Library/Internet\ Plug-Ins/ZoomUsPlugIn.plugin
+	/bin/rm -rf /Users/*/Library/Internet\ Plug-Ins/ZoomUsPlugIn.plugin
 	echo "Deleted /Users/*/Library/Internet\ Plug-Ins/ZoomUsPlugIn.plugin"
 fi
 
 if
 	[ -d /Users/*/Library/Logs/zoom.us/ ]
 then
-	rm -rf /Users/*/Library/Logs/zoom.us/
+	/bin/rm -rf /Users/*/Library/Logs/zoom.us/
 	echo "Deleted /Users/*/Library/Logs/zoom.us/"
 fi
 
 if
 	[ -f /Users/*/Library/Preferences/us.zoom.xos.plist ]
 then
-	rm -f /Users/*/Library/Preferences/us.zoom.xos.plist
+	/bin/rm -f /Users/*/Library/Preferences/us.zoom.xos.plist
 	echo "Deleted /Users/*/Library/Preferences/us.zoom.xos.plist"
 fi
 
 if
 	[ -f /Users/*/Library/Preferences/ZoomChat.plist ]
 then
-	rm -f /Users/*/Library/Preferences/ZoomChat.plist
+	/bin/rm -f /Users/*/Library/Preferences/ZoomChat.plist
 	echo "Deleted /Users/*/Library/Preferences/ZoomChat.plist"
 fi
 
