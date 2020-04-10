@@ -7,7 +7,7 @@
 		<key>created_by</key>
 		<string>kevinmcox</string>
 		<key>creation_date</key>
-		<date>2020-04-10T14:44:44Z</date>
+		<date>2020-04-10T20:44:44Z</date>
 		<key>munki_version</key>
 		<string>4.1.2.3939</string>
 		<key>os_version</key>
@@ -33,7 +33,7 @@
 	<string>#!/bin/bash
 
 # Zoom Search and Destroy
-# Version 1.0
+# Version 1.1
 # By Kevin M. Cox
 # Last updated 4/10/20
 
@@ -81,7 +81,7 @@ exit 1</string>
 	<string>#!/bin/bash
 
 # Zoom Search and Destroy
-# Version 1.0
+# Version 1.1
 # By Kevin M. Cox
 # Last updated 4/10/20
 
@@ -181,6 +181,6 @@ echo "Zoom Search and Destroy complete."</string>
 	<key>unattended_install</key>
 	<true/>
 	<key>version</key>
-	<string>1.0</string>
+	<string>1.1</string>
 </dict>
 </plist>
