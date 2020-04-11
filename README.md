@@ -26,3 +26,7 @@ More details: https://scriptingosx.com/2016/01/control-apple-remote-desktop-acce
 ### EnableSSH.pkginfo
 By [@scriptingosx](https://gist.github.com/scriptingosx), Control ssh access with munki nopkg scripts.  
 More details: https://scriptingosx.com/2014/12/control-ssh-access-with-munki-nopkg-scripts/
+
+### ZoomSearchDestroy.pkginfo
+Search and Destroy all files related to Zoom Video Conferencing automatically.  
+More details: https://www.kevinmcox.com/2020/04/delete-zoom-with-a-munki-nopkg/
