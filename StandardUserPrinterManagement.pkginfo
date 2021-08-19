@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>kevinmcox</string>
+		<key>creation_date</key>
+		<date>2021-08-17T12:44:44Z</date>
+		<key>munki_version</key>
+		<string>5.5.0.4360</string>
+		<key>os_version</key>
+		<string>11.5.2</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+		<string>beta</string>
+		<string>live</string>
+	</array>
+	<key>category</key>
+	<string>NoPkg</string>
+	<key>description</key>
+	<string>Gives Standard (non-Admin) users the ability to manage Printers and Scanners in System Preferences.</string>
+	<key>developer</key>
+	<string>Kevin M. Cox</string>
+	<key>display_name</key>
+	<string>Printer Management by Standard Users</string>
+	<key>icon_name</key>
+	<string>Printer Pref Pane.png</string>
+	<key>installcheck_script</key>
+	<string>#!/bin/sh
+
+# Check to see whether the staff group has been added to lpadmin
+installed=$(/usr/sbin/dseditgroup -o read -n /Local/Default lpadmin | /usr/bin/grep ABCDEFAB-CDEF-ABCD-EFAB-CDEF00000014)
+
+# See if the check is empty
+if [ -z "$installed" ]; then
+    /bin/echo "Standard users cannot manage printers, need to install."
+    exit 0
+else
+    /bin/echo "Standard users can manage printers, no action needed."
+    exit 1
+fi</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>minimum_os_version</key>
+	<string>10.12.0</string>
+	<key>name</key>
+	<string>PrinterManagementStandardUsers</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/sh
+
+/usr/sbin/dseditgroup -o edit -n /Local/Default -a staff -t group lpadmin</string>
+	<key>unattended_install</key>
+	<true/>
+	<key>unattended_uninstall</key>
+	<true/>
+	<key>uninstall_method</key>
+	<string>uninstall_script</string>
+	<key>uninstall_script</key>
+	<string>#!/bin/sh
+
+/usr/sbin/dseditgroup -o edit -n /Local/Default -d staff -t group lpadmin</string>
+	<key>uninstallable</key>
+	<true/>
+	<key>uninstallcheck_script</key>
+	<string>#!/bin/sh
+
+# Check to see whether the staff group has been added to lpadmin
+installed=$(/usr/sbin/dseditgroup -o read -n /Local/Default lpadmin | /usr/bin/grep ABCDEFAB-CDEF-ABCD-EFAB-CDEF00000014)
+
+# See if the check is empty
+if [ -z "$installed" ]; then
+    /bin/echo "Standard users cannot manage printers, no action needed."
+    exit 1
+else
+    /bin/echo "Standard users can manage printers, need to uninstall."
+    exit 0
+fi</string>
+	<key>version</key>
+	<string>1.0</string>
+</dict>
+</plist>
