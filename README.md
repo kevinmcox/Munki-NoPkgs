@@ -27,6 +27,10 @@ More details: https://scriptingosx.com/2016/01/control-apple-remote-desktop-acce
 By [@scriptingosx](https://gist.github.com/scriptingosx), Control ssh access with munki nopkg scripts.  
 More details: https://scriptingosx.com/2014/12/control-ssh-access-with-munki-nopkg-scripts/
 
+### PrinterManagementStandardUsers.pkginfo
+Allow non-admins the ability to manage printers in System Preferences.
+More details: https://www.kevinmcox.com/2021/08/allow-standard-users-to-manage-printers-with-a-munki-nopkg/
+
 ### ZoomSearchDestroy.pkginfo
 Search and Destroy all files related to Zoom Video Conferencing automatically.  
 More details: https://www.kevinmcox.com/2020/04/delete-zoom-with-a-munki-nopkg/
