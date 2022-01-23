@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>kevinmcox</string>
+		<key>creation_date</key>
+		<date>2021-08-28T12:55:44Z</date>
+		<key>munki_version</key>
+		<string>5.5.1.4365</string>
+		<key>os_version</key>
+		<string>11.6</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>catalogs</key>
+	<array>
+		<string>live</string>
+	</array>
+	<key>category</key>
+	<string>NoPkg</string>
+	<key>description</key>
+	<string>Enables the CUPS Web Interface.</string>
+	<key>developer</key>
+	<string>Kevin M. Cox</string>
+	<key>display_name</key>
+	<string>CUPS Web Interface</string>
+	<key>icon_name</key>
+	<string>CUPS.png</string>
+	<key>installcheck_script</key>
+	<string>#!/bin/sh
+
+# Check to see if the CUPS Web Interface is enabled
+enabled=$(/usr/sbin/cupsctl | grep "WebInterface=yes")
+
+# See if the check is empty
+if [ -z "$enabled" ]; then
+    /bin/echo "CUPS web interface is not enabled, need to install."
+    exit 0
+else
+    /bin/echo "CUPS web interface is enabled, no action needed."
+    exit 1
+fi</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>minimum_os_version</key>
+	<string>10.12.0</string>
+	<key>name</key>
+	<string>CUPSWebInterface</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/sh
+
+/usr/sbin/cupsctl WebInterface=yes</string>
+	<key>unattended_install</key>
+	<true/>
+	<key>unattended_uninstall</key>
+	<true/>
+	<key>uninstall_method</key>
+	<string>uninstall_script</string>
+	<key>uninstall_script</key>
+	<string>#!/bin/sh
+
+/usr/sbin/cupsctl WebInterface=no</string>
+	<key>uninstallable</key>
+	<true/>
+	<key>uninstallcheck_script</key>
+	<string>#!/bin/sh
+
+# Check to see is the CUPS Web Interface is enabled
+enabled=$(/usr/sbin/cupsctl | grep "WebInterface=yes")
+
+# See if the check is empty
+if [ -z "$enabled" ]; then
+    /bin/echo "CUPS web interface is not enabled, no action needed."
+    exit 1
+else
+    /bin/echo "CUPS web interface is enabled, need to uninstall."
+    exit 0
+fi</string>
+	<key>version</key>
+	<string>1.0</string>
+</dict>
+</plist>
