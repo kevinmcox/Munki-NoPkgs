@@ -23,13 +23,13 @@ More details: https://technology.siprep.org/changing-client-computer-names-using
 By [@scriptingosx](https://gist.github.com/scriptingosx), Control Apple Remote Desktop Access with Munki.  
 More details: https://scriptingosx.com/2016/01/control-apple-remote-desktop-access-with-munki/
 
-### EnableSSH.pkginfo
-By [@scriptingosx](https://gist.github.com/scriptingosx), Control ssh access with munki nopkg scripts.  
-More details: https://scriptingosx.com/2014/12/control-ssh-access-with-munki-nopkg-scripts/
-
 ### PrinterManagementStandardUsers.pkginfo
-Allow non-admins the ability to manage printers in System Preferences.
+Allow non-admins the ability to manage printers in System Preferences.  
 More details: https://www.kevinmcox.com/2021/08/allow-standard-users-to-manage-printers-with-a-munki-nopkg/
+
+### SSHManagement.pkginfo
+Updated version of an original by [@scriptingosx](https://gist.github.com/scriptingosx), "Control ssh access with munki nopkg scripts."  
+More details: https://scriptingosx.com/2014/12/control-ssh-access-with-munki-nopkg-scripts/
 
 ### ZoomSearchDestroy.pkginfo
 Search and Destroy all files related to Zoom Video Conferencing automatically.  
