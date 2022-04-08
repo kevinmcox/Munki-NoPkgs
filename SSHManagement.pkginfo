@@ -7,26 +7,26 @@
 		<key>created_by</key>
 		<string>kevinmcox</string>
 		<key>creation_date</key>
-		<date>2017-06-08T20:27:10Z</date>
+		<date>2022-04-08T11:12:44Z</date>
 		<key>munki_version</key>
-		<string>3.0.0.3333</string>
+		<string>5.6.4.4406</string>
 		<key>os_version</key>
-		<string>10.12.5</string>
+		<string>12.3.1</string>
 	</dict>
 	<key>autoremove</key>
 	<false/>
 	<key>catalogs</key>
 	<array>
-		<string>testing</string>
-		<string>beta</string>
 		<string>live</string>
 	</array>
 	<key>category</key>
 	<string>NoPkg</string>
+	<key>description</key>
+	<string>Manages the Remote Login / SSH process on macOS.</string>
 	<key>developer</key>
 	<string>Armin Briegel</string>
 	<key>display_name</key>
-	<string>Enable SSH</string>
+	<string>SSH Management</string>
 	<key>icon_name</key>
 	<string>Terminal.png</string>
 	<key>installcheck_script</key>
@@ -38,30 +38,30 @@ PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki export PATH
 # http://scriptingosx.com/2014/12/control-ssh-access-with-munki-nopkg-scripts/
 # This will run as a munki install_check script.
 # Exit status of 0 means install needs to run.
-# Exit status not 0 means no installation necessary.
+# Exit status of 1 means no installation necessary.
 
 ssh_group="com.apple.access_ssh"
 
 # Is SSH enabled?
 if [[ $(systemsetup -getremotelogin) = 'Remote Login: Off' ]]; then
-    echo 'Remote login is off!'
-    exit 0
+	echo 'Remote login is off, install needed.'
+	exit 0
 fi
 
 # Does a group named "com.apple.access_ssh" exist?
 if [[ $(dscl /Local/Default list /Groups | grep "${ssh_group}-disabled" | wc -l) -eq 1 ]]; then
-    echo "access set to 'All Users'"
-    exit 0
+	echo "Access set to 'All Users' install needed."
+	exit 0
 elif [[ $(dscl /Local/Default list /Groups | grep "$ssh_group" | wc -l) -eq 0 ]]; then
-    echo "no group '$ssh_group'"
-    exit 0
+	echo "No group '$ssh_group' install needed."
+	exit 0
 fi
 
 # Does the group contain the admin group?
 admin_uuid=$(dsmemberutil getuuid -G admin)
 if [[ $(dscl /Local/Default read Groups/com.apple.access_ssh NestedGroups | grep "$admin_uuid" | wc -l) -eq 0 ]]; then
-    echo 'admin group not nested in $ssh_group!'
-    exit 0
+	echo 'Admin group not nested in $ssh_group, install needed.'
+	exit 0
 fi
 
 echo "Everything seems as it should be, no install needed."
@@ -69,9 +69,9 @@ exit 1</string>
 	<key>installer_type</key>
 	<string>nopkg</string>
 	<key>minimum_os_version</key>
-	<string>10.8.0</string>
+	<string>11.0</string>
 	<key>name</key>
-	<string>EnableSSH</string>
+	<string>SSHManagement</string>
 	<key>postinstall_script</key>
 	<string>#!/bin/bash
 
@@ -79,38 +79,59 @@ PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki export PATH
 
 # Original Script by Armin Briegel
 # http://scriptingosx.com/2014/12/control-ssh-access-with-munki-nopkg-scripts/
-# Executed if needed after install check script is run.
+# Executed if needed to enable SSH after the install check script is run.
 
 ssh_group="com.apple.access_ssh"
 
 # enable ssh
 if [[ $(systemsetup -getremotelogin) = 'Remote Login: Off' ]]; then
-    echo "Turning on Remote Login/SSH."
-    systemsetup -setremotelogin On
+	echo "Turning on Remote Login/SSH."
+	launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 fi
 
 # Does a group named "com.apple.access_ssh" exist?
 if [[ $(dscl /Local/Default list /Groups | grep "${ssh_group}-disabled" | wc -l) -eq 1 ]]; then
-    #rename this group
-    echo "Renaming group '${ssh_group}-disabled'"
-    dscl localhost change /Local/Default/Groups/${ssh_group}-disabled RecordName ${ssh_group}-disabled $ssh_group
+	#rename this group
+	echo "Renaming group '${ssh_group}-disabled'"
+	dscl localhost change /Local/Default/Groups/${ssh_group}-disabled RecordName ${ssh_group}-disabled $ssh_group
 elif [[ $(dscl /Local/Default list /Groups | grep "$ssh_group" | wc -l) -eq 0 ]]; then
-    # create group
-    echo "Creating group $ssh_group"
-    dseditgroup -o create -n "/Local/Default" -r "Remote Login Group" -T group $ssh_group
+	# create group
+	echo "Creating group $ssh_group"
+	dseditgroup -o create -n "/Local/Default" -r "Remote Login Group" -T group $ssh_group
 fi
 
 # does the group contain the admin group?
 admin_uuid=$(dsmemberutil getuuid -G admin)
 if [[ $(dscl /Local/Default read Groups/$ssh_group NestedGroups | grep "$admin_uuid" | wc -l) -eq 0 ]]; then
-    echo "Adding admin group to $ssh_group"
-    dseditgroup -o edit -n "/Local/Default" -a admin -t group $ssh_group
+	echo "Adding admin group to $ssh_group"
+	dseditgroup -o edit -n "/Local/Default" -a admin -t group $ssh_group
 fi
 
 exit 0</string>
 	<key>unattended_install</key>
 	<true/>
+	<key>unattended_uninstall</key>
+	<true/>
+	<key>uninstall_method</key>
+	<string>uninstall_script</string>
+	<key>uninstall_script</key>
+	<string>#!/bin/sh
+
+echo "Disabling Remote Login/SSH..."
+launchctl unload -w /System/Library/LaunchDaemons/ssh.plist</string>
+	<key>uninstallable</key>
+	<true/>
+	<key>uninstallcheck_script</key>
+	<string>#!/bin/bash
+
+if [[ $(systemsetup -getremotelogin) = 'Remote Login: On' ]]; then
+	echo "Remote Login/SSH needs to be disabled."
+	exit 0
+	else
+	echo "Remote Login/SSH is already disabled, no action needed."
+	exit 1
+fi</string>
 	<key>version</key>
-	<string>0.1</string>
+	<string>2.0</string>
 </dict>
 </plist>
