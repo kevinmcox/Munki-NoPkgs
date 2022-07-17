@@ -34,8 +34,8 @@
 	<key>installcheck_script</key>
 	<string>#!/bin/sh
 
-# Check to see whether the staff group has been added to lpadmin
-installed=$(/usr/sbin/dseditgroup -o read -n /Local/Default lpadmin | /usr/bin/grep ABCDEFAB-CDEF-ABCD-EFAB-CDEF00000014)
+# Check to see whether the staff group has been added to _lpadmin
+installed=$(/usr/sbin/dseditgroup -o read -n /Local/Default _lpadmin | /usr/bin/grep ABCDEFAB-CDEF-ABCD-EFAB-CDEF00000014)
 
 # See if the check is empty
 if [ -z "$installed" ]; then
@@ -54,7 +54,7 @@ fi</string>
 	<key>postinstall_script</key>
 	<string>#!/bin/sh
 
-/usr/sbin/dseditgroup -o edit -n /Local/Default -a staff -t group lpadmin</string>
+/usr/sbin/dseditgroup -o edit -n /Local/Default -a staff -t group _lpadmin</string>
 	<key>unattended_install</key>
 	<true/>
 	<key>unattended_uninstall</key>
@@ -64,14 +64,14 @@ fi</string>
 	<key>uninstall_script</key>
 	<string>#!/bin/sh
 
-/usr/sbin/dseditgroup -o edit -n /Local/Default -d staff -t group lpadmin</string>
+/usr/sbin/dseditgroup -o edit -n /Local/Default -d staff -t group _lpadmin</string>
 	<key>uninstallable</key>
 	<true/>
 	<key>uninstallcheck_script</key>
 	<string>#!/bin/sh
 
-# Check to see whether the staff group has been added to lpadmin
-installed=$(/usr/sbin/dseditgroup -o read -n /Local/Default lpadmin | /usr/bin/grep ABCDEFAB-CDEF-ABCD-EFAB-CDEF00000014)
+# Check to see whether the staff group has been added to _lpadmin
+installed=$(/usr/sbin/dseditgroup -o read -n /Local/Default _lpadmin | /usr/bin/grep ABCDEFAB-CDEF-ABCD-EFAB-CDEF00000014)
 
 # See if the check is empty
 if [ -z "$installed" ]; then
