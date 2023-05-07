@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>kevinmcox</string>
+		<key>creation_date</key>
+		<date>2023-05-05T22:51:10Z</date>
+		<key>munki_version</key>
+		<string>6.3.1.4580</string>
+		<key>os_version</key>
+		<string>13.4</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>catalogs</key>
+	<array>
+		<string>production</string>
+	</array>
+	<key>category</key>
+	<string>NoPkg</string>
+	<key>description</key>
+	<string>This will downgrade Workspace ONE Intelligent Hub away from a version that contains a work disrupting bug.</string>
+	<key>developer</key>
+	<string>Kevin M. Cox</string>
+	<key>display_name</key>
+	<string>Workspace ONE Intelligent Hub remediation</string>
+	<key>icon_name</key>
+	<string>WorkspaceONEIntelligentHub.png</string>
+	<key>installcheck_script</key>
+	<string>#!/bin/bash
+
+# Version 23.04.0.13 of Workspace ONE Intelligent Hub has an annoying bug
+# This script checks the installed version and triggers remediation if needed
+
+# Make sure Intelligent Hub is installed
+if	[[ -e /Applications/Workspace\ ONE\ Intelligent\ Hub.app/Contents/Info.plist ]]; then
+	# Get the version of Intelligent Hub currently installed
+	hubVersion=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" /Applications/Workspace\ ONE\ Intelligent\ Hub.app/Contents/Info.plist)
+else
+	# If not found, exit 1 to skip the postinstall_script
+	echo "Intelligent Hub is not installed, no action needed."
+	exit 1
+fi
+
+if	[[ $hubVersion = 23.04.0.13 ]]; then
+	# If the version matches, exit 0 to trigger the postinstall_script
+	echo "Version 23.04.0.13 is installed, remediation needed."
+	exit 0
+else
+	# If the version doesn't match, exit 1 to skip the postinstall_script
+	echo "The problem version is not installed, no action needed."
+	exit 1
+fi
+</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>minimum_os_version</key>
+	<string>10.4.0</string>
+	<key>name</key>
+	<string>WorkspaceONEIntelligentHubRemediation</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/bash
+
+# This script removes Workspace ONE Intelligent Hub if the installcheck_script determined the need
+
+# Make sure the Intelligent Hub uninstall script exists
+if	[[ -e /Library/Scripts/hubuninstaller.sh ]]; then
+	# Use it to uninstall Intelligent Hub
+	echo "Uninstalling Intelligent Hub."
+	/bin/bash /Library/Scripts/hubuninstaller.sh
+else
+	echo "Intelligent Hub uninstall script is missing; deleting the application to trigger reinstall."
+	/bin/rm -rf /Applications/Workspace\ ONE\ Intelligent\ Hub.app/
+fi
+</string>
+	<key>unattended_install</key>
+	<true/>
+	<key>version</key>
+	<string>1.0</string>
+</dict>
+</plist>
+
