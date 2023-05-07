@@ -31,6 +31,10 @@ More details: https://www.kevinmcox.com/2021/08/allow-standard-users-to-manage-p
 Updated version of an original by [@scriptingosx](https://gist.github.com/scriptingosx), "Control ssh access with munki nopkg scripts."  
 More details: https://scriptingosx.com/2014/12/control-ssh-access-with-munki-nopkg-scripts/
 
+### WorkspaceONEIntelligentHubRemediation
+Checks for a specific version of VMware Workspace ONE Intelligent Hub and removes it if found.  
+More details: https://www.kevinmcox.com/2023/05/uninstalling-workspace-one-intelligent-hub-with-munki/
+
 ### ZoomSearchDestroy.pkginfo
 Search and Destroy all files related to Zoom Video Conferencing automatically.  
 More details: https://www.kevinmcox.com/2020/04/delete-zoom-with-a-munki-nopkg/
