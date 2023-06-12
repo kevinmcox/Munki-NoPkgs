@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>OnDemand</key>
+	<true/>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>kevinmcox</string>
+		<key>creation_date</key>
+		<date>2023-06-06T19:34:44Z</date>
+		<key>munki_version</key>
+		<string>6.3.1.4580</string>
+		<key>os_version</key>
+		<string>13.5</string>
+	</dict>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+	</array>
+	<key>category</key>
+	<string>Self-Service</string>
+	<key>description</key>
+	<string>Enabling beta builds on macOS requires logging in with an Apple ID enrolled in either the Developer program, AppleSeed for IT or the Public beta program.
+
+For questions visit #macos-beta-testing in Company Slack.
+
+"Install" this item to open System Settings - General - Software Update and sign-in with an eligible Apple ID.
+
+NOTE: This item will never show as "Installed" since it performs an on-demand action.</string>
+	<key>developer</key>
+	<string>Kevin M. Cox</string>
+	<key>display_name</key>
+	<string>macOS Beta</string>
+	<key>icon_name</key>
+	<string>macOS.png</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>minimum_os_version</key>
+	<string>13.4</string>
+	<key>name</key>
+	<string>macOS-Beta</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/bash
+
+## macOS Beta enrollment
+## Version 2.0, June 6, 2023
+## By Kevin M. Cox
+
+## This opens: System Settings - General - Software Update - Beta updates
+## This is the new way to enable beta seeds starting in macOS 13.4
+
+# Get the username of the current user
+currentUser="$(/usr/sbin/scutil &lt;&lt;&lt; "show State:/Users/ConsoleUser" | /usr/bin/awk '/Name :/ { print $3 }')"
+
+# Open Software Update as the user
+sudo -u "$currentUser" open "x-apple.systempreferences:com.apple.Software-Update-Settings.extension?action=showBetaUpdates"
+	</string>
+	<key>preinstall_alert</key>
+	<dict>
+		<key>alert_detail</key>
+		<string>Enabling beta builds on macOS requires logging in with an Apple ID enrolled in either the Developer program, AppleSeed for IT or the Public beta program.</string>
+	</dict>
+	<key>version</key>
+	<string>2.0</string>
+</dict>
+</plist>
