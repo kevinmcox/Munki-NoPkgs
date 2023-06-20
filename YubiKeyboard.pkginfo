@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>kevinmcox</string>
+		<key>creation_date</key>
+		<date>2023-02-06T15:07:44Z</date>
+		<key>munki_version</key>
+		<string>6.2.0.4541</string>
+		<key>os_version</key>
+		<string>13.2</string>
+	</dict>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+	</array>
+	<key>category</key>
+	<string>Management</string>
+	<key>description</key>
+	<string>Adds the YubiKey ID to the list of known keyboards to prevent Keyboard Setup Assistant from launching unnecessarily.</string>
+	<key>developer</key>
+	<string>Kevin M. Cox</string>
+	<key>display_name</key>
+	<string>YubiKey</string>
+	<key>icon_name</key>
+	<string>YubiKey.png</string>
+	<key>installcheck_script</key>
+	<string>#!/bin/sh
+# Check if the YubiKey identifier is in the known keyboards list
+installed=$(/usr/bin/defaults read /Library/Preferences/com.apple.keyboardtype.plist keyboardtype | /usr/bin/grep "1031-4176-0")
+# Evaluate if the installed command is empty or not
+if	[ -z "$installed" ]; then
+	# If "1031-4176-0" is not found, Exit 0 to trigger the postinstall_script
+	echo "YubiKey ID needs to be added to the keyboard list."
+	exit 0
+else
+	# If "1031-4176-0" is found, Exit 1 to skip the postinstall_script
+	echo "YubiKey ID is already in the keyboard list."
+	exit 1
+fi
+	</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>name</key>
+	<string>YubiKeyboard</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/sh
+# Add the YubiKey identifier to the known keyboards list so Keyboard Setup Assistant won't launch
+/usr/bin/defaults write /Library/Preferences/com.apple.keyboardtype.plist keyboardtype -dict-add "1031-4176-0" -integer 40
+	</string>
+	<key>unattended_install</key>
+	<true/>
+	<key>unattended_uninstall</key>
+	<false/>
+	<key>uninstallable</key>
+	<false/>
+	<key>version</key>
+	<string>1.0</string>
+</dict>
+</plist>
