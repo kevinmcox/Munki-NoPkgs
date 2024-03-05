@@ -4,16 +4,18 @@
 <dict>
 	<key>OnDemand</key>
 	<true/>
+	<key>RestartAction</key>
+	<string>RequireRestart</string>
 	<key>_metadata</key>
 	<dict>
 		<key>created_by</key>
 		<string>kevinmcox</string>
 		<key>creation_date</key>
-		<date>2022-06-16T05:15:44Z</date>
+		<date>2024-03-04T17:38:47Z</date>
 		<key>munki_version</key>
-		<string>5.7.0.4428</string>
+		<string>6.5.0.4645</string>
 		<key>os_version</key>
-		<string>12.5.0</string>
+		<string>14.4</string>
 	</dict>
 	<key>autoremove</key>
 	<false/>
@@ -38,12 +40,27 @@
 	<key>name</key>
 	<string>SoftwareUpdateKickstart</string>
 	<key>postinstall_script</key>
-	<string>#!/bin/sh
+	<string>#!/bin/zsh
 
-launchctl kickstart -k system/com.apple.softwareupdated</string>
+autoload is-at-least
+version=$(/usr/bin/sw_vers -ProductVersion)
+
+if is-at-least 14.4 "${version}"; then
+	# Skip to the restart
+	exit 0
+else
+	# Kickstart softwareupdated before the restart
+	/bin/launchctl kickstart -k system/com.apple.softwareupdated
+fi
+	</string>
+	<key>preinstall_alert</key>
+	<dict>
+		<key>alert_detail</key>
+		<string>Running this maintenance task will require rebooting your computer. Be sure to save all of your open work before proceeding.</string>
+	</dict>
 	<key>unattended_install</key>
 	<false/>
 	<key>version</key>
-	<string>1.0</string>
+	<string>1.1</string>
 </dict>
 </plist>
