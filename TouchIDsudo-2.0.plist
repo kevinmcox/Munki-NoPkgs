@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>kevinmcox</string>
+		<key>creation_date</key>
+		<date>2024-04-04T18:25:44Z</date>
+		<key>munki_version</key>
+		<string>6.5.0.4659</string>
+		<key>os_version</key>
+		<string>14.5</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+	</array>
+	<key>category</key>
+	<string>Utilities</string>
+	<key>description</key>
+	<string>Enables the use of Touch ID for sudo to elevate privlidges on the command line.</string>
+	<key>developer</key>
+	<string>Kevin M. Cox</string>
+	<key>display_name</key>
+	<string>Touch ID for sudo</string>
+	<key>icon_name</key>
+	<string>TouchID.png</string>
+	<key>installcheck_script</key>
+	<string>#!/bin/sh
+
+# Determine the macOS major version
+majorOSversion=$(/usr/bin/sw_vers -productVersion | /usr/bin/cut -c1-2)
+
+# Configure the path based on macOS version being 14 or higher
+if [ "${majorOSversion}" -ge 14 ]; then
+	path=/etc/pam.d/sudo_local
+else
+	path=/etc/pam.d/sudo
+fi
+
+# Check the current status
+if /usr/bin/grep -xqs "auth       sufficient     pam_tid.so" "${path}" ; then
+	# If the command exits 0 then the configuration is enabled
+	exit 1 # Skip the postinstall_script
+else
+	# If the command exits 1 then configuration is needed
+	exit 0 # Trigger the postinstall_script
+fi
+	</string>
+	<key>installer_type</key>
+	<string>nopkg</string>
+	<key>minimum_os_version</key>
+	<string>10.13</string>
+	<key>name</key>
+	<string>TouchIDsudo</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/sh
+
+# Determine the macOS major version
+majorOSversion=$(/usr/bin/sw_vers -productVersion | /usr/bin/cut -c1-2)
+
+if [ "${majorOSversion}" -ge 14 ]; then
+	# macOS 14 or higher
+	if	[ -e /etc/pam.d/sudo_local ]; then
+		# If the file already exists, back it up and then insert the needed configuration
+		/usr/bin/sed -i '.bak' "3s/^/auth       sufficient     pam_tid.so\\n/g" /etc/pam.d/sudo_local
+	else
+		# Copy the template file into place
+		/bin/cp /etc/pam.d/sudo_local.template /etc/pam.d/sudo_local
+		# Uncomment the example configuration
+		/usr/bin/sed -i '' "s/^#auth/auth/" /etc/pam.d/sudo_local
+	fi
+else
+	# macOS 13 or lower
+	# Backup "/etc/pam.d/sudo" then insert the needed configuration
+	/usr/bin/sed -i '.bak' "2s/^/auth       sufficient     pam_tid.so\\n/g" /etc/pam.d/sudo
+fi
+	</string>
+	<key>unattended_install</key>
+	<true/>
+	<key>unattended_uninstall</key>
+	<true/>
+	<key>uninstall_method</key>
+	<string>uninstall_script</string>
+	<key>uninstall_script</key>
+	<string>#!/bin/sh
+
+# Determine the macOS major version
+majorOSversion=$(/usr/bin/sw_vers -productVersion | /usr/bin/cut -c1-2)
+
+if [ "${majorOSversion}" -ge 14 ]; then
+	# macOS 14 or higher
+	# Backup "/etc/pam.d/sudo_local" then disable the configuration
+	/usr/bin/sed -i '.bak' "s/^auth       sufficient     pam_tid.so/#&amp;/" /etc/pam.d/sudo_local
+else
+	# macOS 13 or lower
+	# Backup "/etc/pam.d/sudo" then delete the configuration
+	/usr/bin/sed -i '.bak' "/auth       sufficient     pam_tid.so/d" /etc/pam.d/sudo
+fi
+	</string>
+	<key>uninstallable</key>
+	<true/>
+	<key>version</key>
+	<string>2.0</string>
+</dict>
+</plist>
