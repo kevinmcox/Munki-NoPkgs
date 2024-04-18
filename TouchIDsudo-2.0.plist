@@ -22,7 +22,7 @@
 	<key>category</key>
 	<string>Utilities</string>
 	<key>description</key>
-	<string>Enables the use of Touch ID for sudo to elevate privlidges on the command line.</string>
+	<string>Enables the use of Touch ID for sudo to elevate privileges on the command line.</string>
 	<key>developer</key>
 	<string>Kevin M. Cox</string>
 	<key>display_name</key>
